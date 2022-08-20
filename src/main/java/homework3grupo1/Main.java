@@ -207,25 +207,82 @@ public class Main {
 
 
     public static void convertLead(List<Lead> listaLeads, List<Contact> listaContactos, List<Opportunity> listaOpportunities, int id, List<Account> listaAccounts, List<SalesRep> listaSalesRep){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaLeads.size() == 0) {
+            System.err.println("Currently our systems don't have any Leads in the database.");
+        }
+        //otherwise, we proceed to print out all of the leads in the system.
+        else {
+            for (int i = 0; i < listaLeads.size(); i++) {
+                int a = listaLeads.get(i).getLeadId();
+                if (a == id) {
+                    Contact contact1 = new Contact(listaLeads.get(i).getName(), listaLeads.get(i).getPhoneNumber(), listaLeads.get(i).getEmail(), listaLeads.get(i).getCompanyName());
+                    listaContactos.add(contact1);
+                    System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been transferred to the contact list.\n");
+                    Product product = PideDatos.pideProduct();
+                    int quantity = PideDatos.pideValorMinMaxCamiones(1, 50);
+                    Opportunity opportunity1 = new Opportunity(contact1, product, quantity, listaLeads.get(i).getSalesRepLead());
+                    listaOpportunities.add(opportunity1);
+                    System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been converted to opportunity and added to the list of opportunities, with the following data : " + opportunity1.toString2() + ".\n");
+                    listaLeads.get(i).getSalesRepLead().addOpportunityListToSalesRep(opportunity1);
+                    listaLeads.remove(i); //TODO -- remove aqui? en caso de que en el switch eligan N, saldra fuera al menu principal y el lead ya no existira.
 
-        for (int i = 0; i < listaLeads.size(); i++) {
-            int a = listaLeads.get(i).getLeadId();
-            if (a == id) {
-                Contact contact1 = new Contact(listaLeads.get(i).getName(), listaLeads.get(i).getPhoneNumber(), listaLeads.get(i).getEmail(), listaLeads.get(i).getCompanyName());
-                listaContactos.add(contact1);
-                System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been transferred to the contact list.\n");
-                Product product = PideDatos.pideProduct();
-                int quantity = PideDatos.pideValorMinMaxCamiones(1, 50);
-                Opportunity opportunity1 = new Opportunity(contact1, product, quantity, listaLeads.get(i).getSalesRepLead());
-                listaOpportunities.add(opportunity1);
-                System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been converted to opportunity and added to the list of opportunities, with the following data : " + opportunity1.toString2() + ".\n");
-                listaLeads.get(i).getSalesRepLead().addOpportunityListToSalesRep(opportunity1);
-                //TODO preguntar si quiere crear un account
-                createAccount(listaAccounts);
-                listaLeads.remove(i);
+                    Scanner scan = new Scanner(System.in);
+                    boolean exit = false;
+                    do {
+                        try {
+                            System.out.println("Would you like to create a new account? (Y/N)");
+                            String option = scan.nextLine().toLowerCase().trim();
+
+                            switch (option) {
+
+                                case "y":
+                                    createAccount(listaAccounts);
+                                    listaAccounts.get(i).addContactList(contact1);
+                                    listaAccounts.get(i).addOpportunityList(opportunity1);
+                                    exit = true;
+                                    break;
+
+                                case "n":
+                                    if (listaAccounts.size() == 0) {
+                                        System.err.println("Currently our systems don't have any Account in the database.");
+                                        exit = true;
+                                    }
+                                    //otherwise, we proceed to print out all of the accounts in the system.
+                                    else {
+                                        showAccounts(listaAccounts);
+                                        boolean found = false;
+                                        do {
+                                            int accountId = PideDatos.pideEntero("Select an account id.");
+                                            for (int q = 0; q < listaAccounts.size(); q++) {
+                                                int b = listaAccounts.get(q).getAccountId();
+                                                if (b == accountId){
+                                                    listaAccounts.get(q).addContactList(contact1);
+                                                    listaAccounts.get(q).addOpportunityList(opportunity1);
+                                                    System.out.println("Contact " + contact1.getContactId() +
+                                                            " and " + opportunity1.getOpportunityId() +
+                                                            " have been added to Account " + listaAccounts.get(q).getAccountId());
+                                                    found = true;
+                                                }
+                                            }if (!found) System.err.println("Selected id doesn't exist. Try again");
+                                        }while (!found);
+                                    }//
+                                    exit = true;
+                                    break;
+
+                                default:
+                                    System.err.println("You have to select an appropriate option. Type just Y or N.");
+                            }
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                            scan.next();
+                        }
+                    } while (!exit);
+
+                }
             }
         }
-    } //
+    }
 
 
     public static void createAccount(List<Account> listaAccounts){
