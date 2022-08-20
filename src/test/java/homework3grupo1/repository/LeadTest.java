@@ -18,7 +18,7 @@ public class LeadTest {
         l1.setEmail("pjr@novact.org");
         l1.setCompanyName("International Institute for Nonviolent Action");
 
-        Lead l2 = new Lead("Pedro Jr",644820734,"pjr@novact.org","International Institute for Nonviolent Action");
+        Lead l2 = new Lead(0,"Pedro Jr",644820734,"pjr@novact.org","International Institute for Nonviolent Action");
         // Just in case we eventually implement logic in our g&s
         assertEquals(l2.getName(),l1.getName());
         assertEquals(l2.getPhoneNumber(),l1.getPhoneNumber());

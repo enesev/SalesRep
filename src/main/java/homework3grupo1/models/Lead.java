@@ -1,12 +1,15 @@
 package homework3grupo1.models;
 
 import javax.persistence.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 public class Lead {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer leadId = (int) (Math.random() * 2000 + 2000);
+    private Integer leadId;
+
+    private static final AtomicInteger count = new AtomicInteger(0);
     private String name;
     private int phoneNumber;
     private String email;
@@ -16,7 +19,8 @@ public class Lead {
     @JoinColumn(name = "sales_rep_id")
     private SalesRep salesRepLead;
 
-    public Lead(String name, int phoneNumber, String email, String companyName) {
+    public Lead(Integer leadId, String name, int phoneNumber, String email, String companyName) {
+        this.leadId = count.incrementAndGet();
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
