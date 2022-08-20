@@ -20,7 +20,6 @@ public class Main {
         Lead lead6 = new Lead(0,"pedroooo", 123, "aaa", "tomic");
         System.out.println(lead1.getLeadId() + ", " +lead2.getLeadId() + ", " +lead3.getLeadId() + ", "
                 +lead4.getLeadId() + ", " +lead5.getLeadId() + ", " +lead6.getLeadId());
-        System.exit(0);
         List<Lead> lalista = new ArrayList<>();
 
         List<Contact> listaContactos = new ArrayList<>();
