@@ -12,6 +12,15 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Lead lead1 = new Lead(0,"pedro", 123, "aaa", "tomic");
+        Lead lead2 = new Lead(0,"pedrito", 123, "aaa", "tomic");
+        Lead lead3 = new Lead(0,"pedraso", 123, "aaa", "tomic");
+        Lead lead4 = new Lead(0,"pedrillo", 123, "aaa", "tomic");
+        Lead lead5 = new Lead(0,"pedraco", 123, "aaa", "tomic");
+        Lead lead6 = new Lead(0,"pedroooo", 123, "aaa", "tomic");
+        System.out.println(lead1.getLeadId() + ", " +lead2.getLeadId() + ", " +lead3.getLeadId() + ", "
+                +lead4.getLeadId() + ", " +lead5.getLeadId() + ", " +lead6.getLeadId());
+        System.exit(0);
         List<Lead> lalista = new ArrayList<>();
 
         List<Contact> listaContactos = new ArrayList<>();
@@ -129,7 +138,7 @@ public class Main {
         int phoneNumber = PideDatos.pideEntero("What is its phone number?");
         String email = PideDatos.pideString("What is its email address?");
         String companyName = PideDatos.pideString("What company does he/she work for?");
-        Lead lead1 = new Lead(name, phoneNumber, email, companyName);
+        Lead lead1 = new Lead(0,name, phoneNumber, email, companyName);
         System.out.println("A new lead has been created with the following data: " + lead1.toString());
         lalista.add(lead1);
         //aqui mostrar lista de leads y pedir el id del salesrep, y meter este contacto en su lista
