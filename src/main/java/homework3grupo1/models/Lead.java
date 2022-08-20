@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 public class Lead {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(sºtrategy = GenerationType.IDENTITY)
     private Integer leadId;
 
     private static final AtomicInteger count = new AtomicInteger(0);
