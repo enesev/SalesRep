@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MainTest {
     List<Lead> listaLeads = new ArrayList<>();
     List<Account> listaAccounts = new ArrayList<>();
-    Lead l1 = new Lead("juan",622733955,"juan@gmail.com","juanCompany");
+    Lead l1 = new Lead(0,"juan",622733955,"juan@gmail.com","juanCompany");
     Contact c1 = new Contact("pedro",623525213,"pedro@hotmail.com","pedroCompany");
     Opportunity o1 = new Opportunity(c1, Product.FLATBED,20);
     Account a1 = new Account(Industry.PRODUCE,20000,"Paris", "France");
@@ -44,7 +44,7 @@ public class MainTest {
         int phoneNumber = 622733955;
         String email = "juan@gmail.com";
         String companyName = "juanCompany";
-        Lead lead2 = new Lead(name, phoneNumber, email, companyName);
+        Lead lead2 = new Lead(0,name, phoneNumber, email, companyName);
         listaLeads.add(lead2);
 
         assertEquals(listaLeads.get(1).getName(),listaLeads.get(0).getName());

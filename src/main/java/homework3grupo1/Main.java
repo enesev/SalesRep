@@ -12,6 +12,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Lead lead1 = new Lead(0,"pedro", 123, "aaa", "tomic");
+        Lead lead2 = new Lead(0,"pedrito", 123, "aaa", "tomic");
+        Lead lead3 = new Lead(0,"pedraso", 123, "aaa", "tomic");
+        Lead lead4 = new Lead(0,"pedrillo", 123, "aaa", "tomic");
+        Lead lead5 = new Lead(0,"pedraco", 123, "aaa", "tomic");
+        Lead lead6 = new Lead(0,"pedroooo", 123, "aaa", "tomic");
+        System.out.println(lead1.getLeadId() + ", " +lead2.getLeadId() + ", " +lead3.getLeadId() + ", "
+                +lead4.getLeadId() + ", " +lead5.getLeadId() + ", " +lead6.getLeadId());
         List<Lead> lalista = new ArrayList<>();
 
         List<Contact> listaContactos = new ArrayList<>();
@@ -146,36 +154,7 @@ public class Main {
 
 
 
-    }
-
-    public static void createNewLead(List<Lead> lalista, List<SalesRep> listaSalesRep){
-        //we check to see if the arraylist is empty, so we can display the proper message
-        if(listaSalesRep.size() == 0){
-            System.err.println("The SalesRep list is empty. Please create a SalesRep first.");
-            //otherwise, we proceed to create a lead
-        }else {
-            System.out.println("Creating a new lead:");
-            String name = PideDatos.pideString("What is the name of the new lead?");
-            int phoneNumber = PideDatos.pideEntero("What is its phone number?");
-            String email = PideDatos.pideString("What is its email address?");
-            String companyName = PideDatos.pideString("What company does he/she work for?");
-            Lead lead1 = new Lead(name, phoneNumber, email, companyName);
-            System.out.println("A new lead has been created with the following data: " + lead1.toString2());
-            lalista.add(lead1);
-            System.out.println("\nThese are the SalesRep we have available: \n");
-            showSalesReps(listaSalesRep);
-            boolean found = false;
-            do {
-                int idSelected = PideDatos.pideEntero("\nPlease select the SalesRep's id you want to associate this lead with.");
-                for (int i = 0; i < listaSalesRep.size(); i++) {
-                    if (idSelected == listaSalesRep.get(i).getSalesRepId()) {
-                        listaSalesRep.get(i).addLeadListToSalesRep(lead1);
-                        lead1.setSalesRepLead(listaSalesRep.get(i));
-                        found = true;
-                    }
-                }if (!found) System.err.println("Selected id doesn't exist. Try again");
-            }while (!found);
-            System.out.println("\nLead " + lead1.getLeadId() + " has been added to the selected SalesRep\n");
+    
 
         }
     }
