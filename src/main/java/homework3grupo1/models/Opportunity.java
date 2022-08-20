@@ -36,11 +36,35 @@ public class Opportunity {
         setQuantity(quantity);
     }
 
+    public Opportunity( Contact decisionMaker, Product product, int quantity, SalesRep salesRepOpportunity) {
+        setDecisionMaker(decisionMaker);
+        setProduct(product);
+        setQuantity(quantity);
+        this.salesRepOpportunity = salesRepOpportunity;
+    }
+
     public Opportunity() {
     }
 
+
     public void compareId(Integer id1, Integer id2) throws RuntimeException{
         if (id1 == id2) throw new RuntimeException("Ids must be different.");
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public SalesRep getSalesRepOpportunity() {
+        return salesRepOpportunity;
+    }
+
+    public void setSalesRepOpportunity(SalesRep salesRepOpportunity) {
+        this.salesRepOpportunity = salesRepOpportunity;
     }
 
     public Integer getOpportunityId() {
@@ -83,6 +107,8 @@ public class Opportunity {
         this.quantity = quantity;
     }
 
+
+
     @Override
     public String toString() {
         return "Opportunity{" +
@@ -91,6 +117,19 @@ public class Opportunity {
                 ", decisionMaker=" + decisionMaker +
                 ", product=" + product +
                 ", quantity=" + quantity +
+                ", account=" + account +
+                ", SalesRep=" + salesRepOpportunity.getSalesRepId() + " " + salesRepOpportunity.getName() +
+                '}';
+    }
+
+    public String toString2() {
+        return "Opportunity{" +
+                "opportunityId=" + opportunityId +
+                ", status=" + status +
+                ", decisionMaker=" + decisionMaker +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                ", account=" + account +
                 '}';
     }
 }

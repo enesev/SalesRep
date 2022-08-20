@@ -23,6 +23,12 @@ public class SalesRep {
     public SalesRep() {
     }
 
+    public SalesRep(String name, List<Opportunity> opportunitySalesRepList, List<Lead> leadSalesRepList) {
+        this.name = name;
+        setOpportunitySalesRepList(opportunitySalesRepList);
+        this.leadSalesRepList = leadSalesRepList;
+    }
+
     public void addOpportunityListToSalesRep(Opportunity opportunity){
         this.opportunitySalesRepList.add(opportunity);
     }
