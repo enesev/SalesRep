@@ -22,10 +22,27 @@ public class Lead {
         this.email = email;
         this.companyName = companyName;
     }
+
+    public Lead(String name, int phoneNumber, String email, String companyName, SalesRep salesRepLead) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.companyName = companyName;
+        setSalesRepLead(salesRepLead);
+    }
+
     public Lead(){};
 
     public void compareId(Integer id1, Integer id2) throws RuntimeException{
         if (id1 == id2) throw new RuntimeException("Ids must be different.");
+    }
+
+    public SalesRep getSalesRepLead() {
+        return salesRepLead;
+    }
+
+    public void setSalesRepLead(SalesRep salesRepLead) {
+        this.salesRepLead = salesRepLead;
     }
 
     public String getName() {
@@ -71,15 +88,25 @@ public class Lead {
     @Override
     public String toString() {
         return "Lead{" +
-                "LeadId=" + leadId +
+                "leadId=" + leadId +
                 ", name='" + name + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +
                 ", companyName='" + companyName + '\'' +
+                ", SalesRep==" + salesRepLead.getSalesRepId() + " " + salesRepLead.getName() +
                 '}';
     }
 
 
+    public String toString2() {
+        return "Lead{" +
+                "leadId=" + leadId +
+                ", name='" + name + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
+                ", companyName='" + companyName +
+                '}';
+    }
 }
 
 

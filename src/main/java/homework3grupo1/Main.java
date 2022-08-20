@@ -22,6 +22,32 @@ public class Main {
 
         List<SalesRep> listaSalesRep = new ArrayList<>();
 
+        ////////////////////////////////////////////////////PRUEBAS
+
+        Lead lead1 = new Lead("kakakak",666666, "email", "kakakakak");
+        Lead lead2 = new Lead("kekekek",666666, "email", "kakakakak");
+        Lead lead3 = new Lead("kokoko",666666, "email", "kakakakak");
+        Lead lead4 = new Lead("kukuku",666666, "email", "kukuku");
+
+        lalista.add(lead1);
+        lalista.add(lead2);
+        lalista.add(lead3);
+        lalista.add(lead4);
+
+
+        SalesRep salesRep1 = new SalesRep("jajajaj");
+        SalesRep salesRep2 = new SalesRep("jejejej");
+        SalesRep salesRep3 = new SalesRep("jojojo");
+        SalesRep salesRep4 = new SalesRep("jujuju");
+
+        listaSalesRep.add(salesRep1);
+        listaSalesRep.add(salesRep2);
+        listaSalesRep.add(salesRep3);
+        listaSalesRep.add(salesRep4);
+
+
+
+        //////////////////////////////////////////////////// FIN DE PRUEBAS
 
         Scanner scan = new Scanner(System.in);
         boolean exit = false;
@@ -51,7 +77,7 @@ public class Main {
                 switch (option){
 
                     case "new lead":
-                        createNewLead(lalista);
+                        createNewLead(lalista, listaSalesRep);
 
                         break;
 
@@ -71,7 +97,7 @@ public class Main {
 
                     case "convert id":
                         int id = PideDatos.pideEntero("Select a lead's id to convert it to contact.");
-                        convertLead(lalista, listaContactos, listaOpportunities, id, listaAccounts);
+                        convertLead(lalista, listaContactos, listaOpportunities, id, listaAccounts, listaSalesRep);
 
                         break;
 
@@ -122,18 +148,36 @@ public class Main {
 
     }
 
-    public static void createNewLead(List<Lead> lalista){
-        //meter algo aqui que diga que si no hay salesrep creados no se puede crear un lead
-        System.out.println("Creating a new lead:");
-        String name = PideDatos.pideString("What is the name of the new lead?");
-        int phoneNumber = PideDatos.pideEntero("What is its phone number?");
-        String email = PideDatos.pideString("What is its email address?");
-        String companyName = PideDatos.pideString("What company does he/she work for?");
-        Lead lead1 = new Lead(name, phoneNumber, email, companyName);
-        System.out.println("A new lead has been created with the following data: " + lead1.toString());
-        lalista.add(lead1);
-        //aqui mostrar lista de leads y pedir el id del salesrep, y meter este contacto en su lista
+    public static void createNewLead(List<Lead> lalista, List<SalesRep> listaSalesRep){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if(listaSalesRep.size() == 0){
+            System.err.println("The SalesRep list is empty. Please create a SalesRep first.");
+            //otherwise, we proceed to create a lead
+        }else {
+            System.out.println("Creating a new lead:");
+            String name = PideDatos.pideString("What is the name of the new lead?");
+            int phoneNumber = PideDatos.pideEntero("What is its phone number?");
+            String email = PideDatos.pideString("What is its email address?");
+            String companyName = PideDatos.pideString("What company does he/she work for?");
+            Lead lead1 = new Lead(name, phoneNumber, email, companyName);
+            System.out.println("A new lead has been created with the following data: " + lead1.toString2());
+            lalista.add(lead1);
+            System.out.println("\nThese are the SalesRep we have available: \n");
+            showSalesReps(listaSalesRep);
+            boolean found = false;
+            do {
+                int idSelected = PideDatos.pideEntero("\nPlease select the SalesRep's id you want to associate this lead with.");
+                for (int i = 0; i < listaSalesRep.size(); i++) {
+                    if (idSelected == listaSalesRep.get(i).getSalesRepId()) {
+                        listaSalesRep.get(i).addLeadListToSalesRep(lead1);
+                        lead1.setSalesRepLead(listaSalesRep.get(i));
+                        found = true;
+                    }
+                }if (!found) System.err.println("Selected id doesn't exist. Try again");
+            }while (!found);
+            System.out.println("\nLead " + lead1.getLeadId() + " has been added to the selected SalesRep\n");
 
+        }
     }
 
     public static void createNewSalesRep(List<SalesRep> listaSalesRep){
@@ -159,10 +203,10 @@ public class Main {
                 }
             }
         }
-    }    //esta perfect
+    }    //esta perfect  357
 
 
-    public static void convertLead(List<Lead> listaLeads, List<Contact> listaContactos, List<Opportunity> listaOpportunities, int id, List<Account> listaAccounts){
+    public static void convertLead(List<Lead> listaLeads, List<Contact> listaContactos, List<Opportunity> listaOpportunities, int id, List<Account> listaAccounts, List<SalesRep> listaSalesRep){
 
         for (int i = 0; i < listaLeads.size(); i++) {
             int a = listaLeads.get(i).getLeadId();
@@ -172,9 +216,11 @@ public class Main {
                 System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been transferred to the contact list.\n");
                 Product product = PideDatos.pideProduct();
                 int quantity = PideDatos.pideValorMinMaxCamiones(1, 50);
-                Opportunity opportunity1 = new Opportunity(contact1, product, quantity);
+                Opportunity opportunity1 = new Opportunity(contact1, product, quantity, listaLeads.get(i).getSalesRepLead());
                 listaOpportunities.add(opportunity1);
-                System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been converted to opportunity and added to the list of opportunities, with the following data : " + opportunity1.toString() + ".\n");
+                System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been converted to opportunity and added to the list of opportunities, with the following data : " + opportunity1.toString2() + ".\n");
+                listaLeads.get(i).getSalesRepLead().addOpportunityListToSalesRep(opportunity1);
+                //TODO preguntar si quiere crear un account
                 createAccount(listaAccounts);
                 listaLeads.remove(i);
             }
@@ -194,42 +240,71 @@ public class Main {
 
 
     public static void showLeads(List<Lead> lista){
-        for (int i = 0; i <lista.size(); i++) {
-            System.out.println(lista.get(i).getLeadId() + " " + lista.get(i).getName());
-
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (lista.size() == 0) {
+            System.err.println("Currently our systems don't have any Leads in the database");
         }
-        System.out.println();
+        //otherwise, we proceed to print out all of the leads in the system.
+        else {
+            for (int i = 0; i < lista.size(); i++) {
+                System.out.println(lista.get(i).getLeadId() + " " + lista.get(i).getName() + "\n");
+            }
+        }
     } // está ok
 
 
     public static void showContacts(List<Contact> listaContacts){
-        for (int i = 0; i <listaContacts.size(); i++) {
-            System.out.println(listaContacts.get(i).toString());
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaContacts.size() == 0) {
+            System.err.println("Currently our systems don't have any Contact in the database");
         }
-        System.out.println();
+        //otherwise, we proceed to print out all of the contacts in the system.
+        else {
+            for (int i = 0; i < listaContacts.size(); i++) {
+                System.out.println(listaContacts.get(i).toString() +"\n");
+            }
+        }
     } // está ok
 
 
 
     public static void showOpportunities(List<Opportunity> listaOpportunities){
-        for (int i = 0; i <listaOpportunities.size(); i++) {
-            System.out.println(listaOpportunities.get(i).toString());
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaOpportunities.size() == 0) {
+            System.err.println("Currently our systems don't have any Opportunity in the database");
         }
-        System.out.println();
+        //otherwise, we proceed to print out all of the opportunities in the system.
+        else {
+            for (int i = 0; i < listaOpportunities.size(); i++) {
+                System.out.println(listaOpportunities.get(i).toString2() +"\n");
+            }
+        }
     } // está ok
 
     public static void showAccounts(List<Account> listaAccounts){
-        for (int i = 0; i <listaAccounts.size(); i++) {
-            System.out.println(listaAccounts.get(i).toString());
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaAccounts.size() == 0) {
+            System.err.println("Currently our systems don't have any Account in the database");
         }
-        System.out.println();
+        //otherwise, we proceed to print out all of the accounts in the system.
+        else {
+            for (int i = 0; i < listaAccounts.size(); i++) {
+                System.out.println(listaAccounts.get(i).toString() + "\n");
+            }
+        }
     } // está ok
 
     public static void showSalesReps(List<SalesRep> listaSalesRep){
-        for (int i = 0; i <listaSalesRep.size(); i++) {
-            System.out.println(listaSalesRep.get(i).toString());
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaSalesRep.size() == 0) {
+            System.err.println("Currently our systems don't have any SalesRep in the database");
         }
-        System.out.println();
+        //otherwise, we proceed to print out all of the salesreps in the system.
+        else {
+            for (int i = 0; i < listaSalesRep.size(); i++) {
+                System.out.println(listaSalesRep.get(i).toString() + "\n");
+            }
+        }
     } // está ok
 
     public static void closeLostId(List<Opportunity> listaOpportunities, int oppId){
@@ -247,7 +322,7 @@ public class Main {
                 System.err.println("Selected id doesn't exist. Please choose a valid id.");
             }
         }
-    }
+    }//añadir al principio que compruebe que haya opportunities en la lista?? o que haya y esten en open??
 
     public static void closeWonId(List<Opportunity> listaOpportunities, int oppId2){
         for (int i = 0; i < listaOpportunities.size(); i++) {
@@ -264,7 +339,7 @@ public class Main {
                 System.err.println("Selected id doesn't exist. Please choose a valid id.");
             }
         }
-    } //ESTÁ OK
+    } ////añadir al principio que compruebe que haya opportunities en la lista?? o que haya y esten en open??
 
 
 
