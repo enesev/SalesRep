@@ -9,7 +9,7 @@ public class SalesRep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer salesRepId = (int) (Math.random() * 100 + 300);
+    private Long salesRepId;
 
     private String name;
 
@@ -41,11 +41,11 @@ public class SalesRep {
         this.name = name;
     }
 
-    public Integer getSalesRepId() {
+    public Long getSalesRepId() {
         return salesRepId;
     }
 
-    public void setSalesRepId(Integer salesRepId) {
+    public void setSalesRepId(Long salesRepId) {
         this.salesRepId = salesRepId;
     }
 

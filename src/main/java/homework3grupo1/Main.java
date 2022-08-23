@@ -5,6 +5,8 @@ import homework3grupo1.enums.Product;
 import homework3grupo1.enums.Status;
 import homework3grupo1.funcionesPedirDatos.PideDatos;
 import homework3grupo1.models.*;
+import homework3grupo1.repository.LeadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
         List<Lead> lalista = new ArrayList<>();
 
         List<Contact> listaContactos = new ArrayList<>();
@@ -102,7 +105,7 @@ public class Main {
                         break;
 
                     case "show contacts":
-                        showContacts(listaContactos);
+                        showContacts(listaContactos); //dentro del parentesis iria contactRepository.findAll
 
                         break;
 
@@ -149,6 +152,7 @@ public class Main {
     }
 
     public static void createNewLead(List<Lead> lalista, List<SalesRep> listaSalesRep){
+
         //we check to see if the arraylist is empty, so we can display the proper message
         if(listaSalesRep.size() == 0){
             System.err.println("The SalesRep list is empty. Please create a SalesRep first.");
@@ -162,6 +166,8 @@ public class Main {
             Lead lead1 = new Lead(name, phoneNumber, email, companyName);
             System.out.println("A new lead has been created with the following data: " + lead1.toString2());
             lalista.add(lead1);
+            //TODO --añadir un save para que se guarde en la bdd
+
             System.out.println("\nThese are the SalesRep we have available: \n");
             showSalesReps(listaSalesRep);
             boolean found = false;
@@ -196,7 +202,7 @@ public class Main {
         while (repite) {
             int id = PideDatos.pideEntero("Choose the id you want to see detailed");
             for (int i = 0; i < lista.size(); i++) {
-                int a = lista.get(i).getLeadId();
+                Long a = lista.get(i).getLeadId();
                 if (a == id) {
                     System.out.println("Lead's details are: " + lista.get(i).toString());
                     repite = false;
@@ -214,7 +220,7 @@ public class Main {
         //otherwise, we proceed to print out all of the leads in the system.
         else {
             for (int i = 0; i < listaLeads.size(); i++) {
-                int a = listaLeads.get(i).getLeadId();
+                Long a = listaLeads.get(i).getLeadId();
                 if (a == id) {
                     Contact contact1 = new Contact(listaLeads.get(i).getName(), listaLeads.get(i).getPhoneNumber(), listaLeads.get(i).getEmail(), listaLeads.get(i).getCompanyName());
                     listaContactos.add(contact1);
@@ -255,7 +261,7 @@ public class Main {
                                         do {
                                             int accountId = PideDatos.pideEntero("Select an account id.");
                                             for (int q = 0; q < listaAccounts.size(); q++) {
-                                                int b = listaAccounts.get(q).getAccountId();
+                                                Long b = listaAccounts.get(q).getAccountId();
                                                 if (b == accountId){
                                                     listaAccounts.get(q).addContactList(contact1);
                                                     listaAccounts.get(q).addOpportunityList(opportunity1);

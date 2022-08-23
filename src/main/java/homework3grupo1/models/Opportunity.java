@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Opportunity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer opportunityId = (int) (Math.random() * 100 + 300);
+    private Long opportunityId;
     @Enumerated
     private Status status = Status.OPEN;
     @OneToOne
@@ -47,9 +47,7 @@ public class Opportunity {
     }
 
 
-    public void compareId(Integer id1, Integer id2) throws RuntimeException{
-        if (id1 == id2) throw new RuntimeException("Ids must be different.");
-    }
+
 
     public Account getAccount() {
         return account;
@@ -67,11 +65,11 @@ public class Opportunity {
         this.salesRepOpportunity = salesRepOpportunity;
     }
 
-    public Integer getOpportunityId() {
+    public Long getOpportunityId() {
         return opportunityId;
     }
 
-    public void setOpportunityId(Integer opportunityId) {
+    public void setOpportunityId(Long opportunityId) {
         this.opportunityId = opportunityId;
     }
 

@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Lead {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer leadId = (int) (Math.random() * 2000 + 2000);
+    private Long leadId;
     private String name;
     private int phoneNumber;
     private String email;
@@ -33,9 +33,7 @@ public class Lead {
 
     public Lead(){};
 
-    public void compareId(Integer id1, Integer id2) throws RuntimeException{
-        if (id1 == id2) throw new RuntimeException("Ids must be different.");
-    }
+
 
     public SalesRep getSalesRepLead() {
         return salesRepLead;
@@ -77,11 +75,11 @@ public class Lead {
         this.companyName = companyName;
     }
 
-    public Integer getLeadId() {
+    public Long getLeadId() {
         return leadId;
     }
 
-    public void setLeadId(Integer leadId) {
+    public void setLeadId(Long leadId) {
         this.leadId = leadId;
     }
 
