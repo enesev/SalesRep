@@ -10,7 +10,7 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer accountId = (int) (Math.random() * 100 + 300);
+    private Long accountId;
     @Enumerated(EnumType.STRING)
     private Industry industry;
     private int employeeCount;
@@ -33,11 +33,11 @@ public class Account {
         if (id1 == id2) throw new RuntimeException("Ids must be different.");
     }
 
-    public Integer getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Integer accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 
