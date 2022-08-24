@@ -1,5 +1,8 @@
 package homework3grupo1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import homework3grupo1.funcionesPedirDatos.PideDatos;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +20,24 @@ public class SalesRep {
     private List<Opportunity> opportunitySalesRepList = new ArrayList<>();
 
     @OneToMany (mappedBy = "salesRepLead" )
-    private List<Lead> leadSalesRepList = new ArrayList<>();
+    private List<Leads> leadsSalesRepList = new ArrayList<>();
 
 
     public SalesRep() {
     }
 
-    public SalesRep(String name, List<Opportunity> opportunitySalesRepList, List<Lead> leadSalesRepList) {
+    public SalesRep(String name, List<Opportunity> opportunitySalesRepList, List<Leads> leadsSalesRepList) {
         this.name = name;
         setOpportunitySalesRepList(opportunitySalesRepList);
-        this.leadSalesRepList = leadSalesRepList;
+        this.leadsSalesRepList = leadsSalesRepList;
     }
 
     public void addOpportunityListToSalesRep(Opportunity opportunity){
         this.opportunitySalesRepList.add(opportunity);
     }
 
-    public void addLeadListToSalesRep(Lead lead){
-        this.leadSalesRepList.add(lead);
+    public void addLeadListToSalesRep(Leads leads){
+        this.leadsSalesRepList.add(leads);
     }
 
     public SalesRep(String name) {
@@ -65,12 +68,12 @@ public class SalesRep {
         this.opportunitySalesRepList = opportunitySalesRepList;
     }
 
-    public List<Lead> getLeadSalesRepList() {
-        return leadSalesRepList;
+    public List<Leads> getLeadSalesRepList() {
+        return leadsSalesRepList;
     }
 
-    public void setLeadSalesRepList(List<Lead> leadSalesRepList) {
-        this.leadSalesRepList = leadSalesRepList;
+    public void setLeadSalesRepList(List<Leads> leadsSalesRepList) {
+        this.leadsSalesRepList = leadsSalesRepList;
     }
 
     @Override
@@ -79,7 +82,31 @@ public class SalesRep {
                 "salesRepId=" + salesRepId +
                 ", name='" + name + '\'' +
                 ", opportunitySalesRepList=" + opportunitySalesRepList +
-                ", leadSalesRepList=" + leadSalesRepList +
+                ", leadSalesRepList=" + leadsSalesRepList +
                 '}';
     }
+
+
+
+    public static SalesRep createNewSalesRep(){
+        System.out.println("Creating a new SalesRep:");
+        String name = PideDatos.pideString("What is the name of the new SalesRep?");
+        SalesRep salesRep1 = new SalesRep(name);
+        System.out.println("A new SalesRep has been created with the following data: " + salesRep1.toString());
+        System.out.println();
+        return salesRep1;
+    }
+
+    public static void showSalesReps(List<SalesRep> listaSalesRep){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaSalesRep.size() == 0) {
+            System.err.println("Currently our systems don't have any SalesRep in the database");
+        }
+        //otherwise, we proceed to print out all of the salesreps in the system.
+        else {
+            for (int i = 0; i < listaSalesRep.size(); i++) {
+                System.out.println(listaSalesRep.get(i).toString() + "\n");
+            }
+        }
+    } // está ok
 }
