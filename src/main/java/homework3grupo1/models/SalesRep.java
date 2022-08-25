@@ -24,6 +24,7 @@ public class SalesRep {
 
 
     public SalesRep() {
+
     }
 
     public SalesRep(String name, List<Opportunity> opportunitySalesRepList, List<Leads> leadsSalesRepList) {
@@ -61,7 +62,7 @@ public class SalesRep {
     }
 
     public List<Opportunity> getOpportunitySalesRepList() {
-        return opportunitySalesRepList;
+        return opportunitySalesRepList == null? new ArrayList<>() : opportunitySalesRepList;
     }
 
     public void setOpportunitySalesRepList(List<Opportunity> opportunitySalesRepList) {
@@ -69,7 +70,8 @@ public class SalesRep {
     }
 
     public List<Leads> getLeadSalesRepList() {
-        return leadsSalesRepList;
+
+        return leadsSalesRepList == null? new ArrayList<>() : leadsSalesRepList;
     }
 
     public void setLeadSalesRepList(List<Leads> leadsSalesRepList) {
@@ -81,12 +83,8 @@ public class SalesRep {
         return "SalesRep{" +
                 "salesRepId=" + salesRepId +
                 ", name='" + name + '\'' +
-                ", opportunitySalesRepList=" + opportunitySalesRepList +
-                ", leadSalesRepList=" + leadsSalesRepList +
                 '}';
     }
-
-
 
     public static SalesRep createNewSalesRep(){
         System.out.println("Creating a new SalesRep:");
@@ -99,7 +97,9 @@ public class SalesRep {
 
     public static void showSalesReps(List<SalesRep> listaSalesRep){
         //we check to see if the arraylist is empty, so we can display the proper message
+
         if (listaSalesRep.size() == 0) {
+
             System.err.println("Currently our systems don't have any SalesRep in the database");
         }
         //otherwise, we proceed to print out all of the salesreps in the system.

@@ -12,4 +12,10 @@ import java.util.List;
 public interface SalesRepRepository extends JpaRepository<SalesRep, Integer> {
 
     List<SalesRep> findAll();
+
+
+
+
+
+
 }

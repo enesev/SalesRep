@@ -4,7 +4,9 @@ import homework3grupo1.enums.Industry;
 import homework3grupo1.enums.Product;
 import homework3grupo1.enums.Status;
 import homework3grupo1.funcionesPedirDatos.PideDatos;
+import homework3grupo1.funcionesPedirDatos.subMenu;
 import homework3grupo1.models.*;
+import homework3grupo1.repository.ContactRepository;
 import homework3grupo1.repository.LeadRepository;
 import homework3grupo1.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 	@Autowired
 	SalesRepRepository salesRepRepository;
 
+	@Autowired
+	ContactRepository contactRepository;
+
 
 
 	public static void main(String[] args) {
@@ -33,6 +38,8 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		leadRepository.save(new Leads());
 
 		List<Leads> listaDeLeads = new ArrayList<>();
 
@@ -68,6 +75,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						"Show SalesReps \n" +
 						"Close-lost id \n" +
 						"Close-won id \n" +
+						"Statistics \n" +
 						"Exit \n");
 				String option = scan.nextLine().toLowerCase().trim();
 
@@ -77,6 +85,8 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						Leads lead1 = Leads.createNewLead(listaSalesRep);
 						leadRepository.save(lead1);
 						listaDeLeads.add(lead1);
+						Leads.addSalesRepToLead(listaSalesRep, lead1);
+						leadRepository.save(lead1);
 
 						break;
 
@@ -129,6 +139,9 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 					case "close-won id":
 						int oppId2 = PideDatos.pideEntero("Write opportunity's id you want to mark as closed-won.");
 						closeWonId(listaOpportunities, oppId2);
+						break;
+					case "statistics":
+						subMenu.statistics();
 						break;
 
 					case "exit":

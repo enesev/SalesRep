@@ -6,12 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LeadRepository extends JpaRepository<Leads, Integer> {
 
 
     List<Leads> findAll();
+
+
 
     //A count of Leads by SalesRep can be displayed by typing “Report Lead by SalesRep”
     //List<Leads> findBySalesRep(SalesRep salesRepLead);

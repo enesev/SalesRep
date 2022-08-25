@@ -15,8 +15,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+/*
 public class MainTest {
+
     List<Leads> listaLeads = new ArrayList<>();
     List<Account> listaAccounts = new ArrayList<>();
 <<<<<<< HEAD
@@ -118,4 +119,5 @@ public class MainTest {
         assertEquals(listaAccounts.get(0).getCountry(),listaAccounts.get(1).getCountry());
 
         }
+
 }

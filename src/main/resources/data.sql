@@ -5,7 +5,9 @@
 use salesforce;
 
 
-insert into leads (name, phone_number, email, company_name) VALUES
+
+
+insert into Leads (name, phone_number, email, company_name) VALUES
 ('Juan', 7777, 'asasasd', 'asdasda'),
 ('pedro', 6666, 'asasasd', 'asdasda'),
 ('javier', 8888, 'asasasd', 'asdasda'),

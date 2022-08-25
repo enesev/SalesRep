@@ -1,13 +1,14 @@
 package homework3grupo1.models;
 
 import homework3grupo1.funcionesPedirDatos.PideDatos;
+import homework3grupo1.repository.LeadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Leads {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,38 +118,56 @@ public class Leads {
             System.err.println("The SalesRep list is empty. Please create a SalesRep first.");
             //otherwise, we proceed to create a lead
         } else {
-            Leads lead1 = new Leads();
             System.out.println("Creating a new lead:");
             String name = PideDatos.pideString("What is the name of the new lead?");
             int phoneNumber = PideDatos.pideEntero("What is its phone number?");
             String email = PideDatos.pideString("What is its email address?");
             String companyName = PideDatos.pideString("What company does he/she work for?");
             Leads leads1 = new Leads(name, phoneNumber, email, companyName);
-            System.out.println("A new lead has been created with the following data: " + leads1.toString2());
-            System.out.println("\nThese are the SalesRep we have available: \n");
-
-            boolean found = false;
-            do {
-                SalesRep.showSalesReps((listaSalesRep));
-                int idSelected = PideDatos.pideEntero("\nPlease select the SalesRep's id you want to associate this lead with.");
-                for (int i = 0; i < listaSalesRep.size(); i++) {
-                    if (idSelected == listaSalesRep.get(i).getSalesRepId()) {
-                        listaSalesRep.get(i).addLeadListToSalesRep(leads1);
-                        leads1.setSalesRepLead(listaSalesRep.get(i));
-                        found = true;
-                    }
-                }if (!found) System.err.println("Selected id doesn't exist. Try again");
-                found = true;
-            }while (!found);
-            System.out.println("\nLead " + leads1.getLeadId() + " has been added to the selected SalesRep\n");
-            return lead1;
+            return leads1;
         }
         return null;
     }
 
 
+    public static Leads addSalesRepToLead(List<SalesRep> listaSalesRep, Leads leads1) {
+        System.out.println("A new lead has been created with the following data: " + leads1.toString2());
+        System.out.println("\nThese are the SalesRep we have available: \n");
+
+        boolean found = false;
+        do {
+            SalesRep.showSalesReps((listaSalesRep));
+            int idSelected = PideDatos.pideEntero("\nPlease select the SalesRep's id you want to associate this lead with.");
+            for (int i = 0; i < listaSalesRep.size(); i++) {
+                if (idSelected == listaSalesRep.get(i).getSalesRepId()) {
+                    listaSalesRep.get(i).addLeadListToSalesRep(leads1);
+                    leads1.setSalesRepLead(listaSalesRep.get(i));
+                    found = true;
+                }
+            }
+            if (!found) System.err.println("Selected id doesn't exist. Try again");
+            found = true;
+        } while (!found);
+        System.out.println("\nLead " + leads1.getLeadId() + " has been added to the selected SalesRep\n");
+        return leads1;
+    }
 
 
+
+    public static void lookupLeadId(List<Leads> lista) {
+
+        boolean repite = true;
+        while (repite) {
+            int id = PideDatos.pideEntero("Choose the id you want to see detailed");
+            for (int i = 0; i < lista.size(); i++) {
+                Long a = lista.get(i).getLeadId();
+                if (a == id) {
+                    System.out.println("Lead's details are: " + lista.get(i).toString());
+                    repite = false;
+                }
+            }
+        }
+    }
 }
 
 
