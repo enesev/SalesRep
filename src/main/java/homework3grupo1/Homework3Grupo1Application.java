@@ -6,9 +6,7 @@ import homework3grupo1.enums.Status;
 import homework3grupo1.funcionesPedirDatos.PideDatos;
 import homework3grupo1.funcionesPedirDatos.subMenu;
 import homework3grupo1.models.*;
-import homework3grupo1.repository.ContactRepository;
-import homework3grupo1.repository.LeadRepository;
-import homework3grupo1.repository.SalesRepRepository;
+import homework3grupo1.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +28,12 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 	@Autowired
 	ContactRepository contactRepository;
 
+	@Autowired
+	AccountRepository accountRepository;
+
+	@Autowired
+	OpportunityRepository opportunityRepository;
+
 
 
 	public static void main(String[] args) {
@@ -38,8 +42,6 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
-		leadRepository.save(new Leads());
 
 		List<Leads> listaDeLeads = new ArrayList<>();
 
@@ -50,6 +52,78 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 		List<Account> listaAccounts = new ArrayList<>();
 
 		List<SalesRep> listaSalesRep = new ArrayList<>();
+
+
+
+		Leads lead1 = new Leads("Sergio", 652325489, "sergio@sergio", "Microsoft");
+		leadRepository.save(lead1);
+		Leads lead2 = new Leads("Antonio", 456789123, "antonio@antonio", "Dropbox");
+		leadRepository.save(lead2);
+		Leads lead3 = new Leads("Anna", 123456789, "anna@anna", "CloudService");
+		leadRepository.save(lead3);
+		Leads lead4 = new Leads("Darwin", 741852963, "darwin@darwin", "Microsoft");
+		leadRepository.save(lead4);
+		Leads lead5 = new Leads("Karim", 147258369, "karim@karim", "Microsoft");
+		leadRepository.save(lead5);
+
+
+		Contact contact1 = new Contact("Sergio",652325489, "sergio@sergio", "Microsoft");
+		contactRepository.save(contact1);
+		Contact contact2 = new Contact("Antonio", 456789123, "antonio@antonio", "Dropbox");
+		contactRepository.save(contact2);
+		Contact contact3 = new Contact("Anna", 123456789, "anna@anna", "CloudService");
+		contactRepository.save(contact3);
+		Contact contact4 = new Contact("Darwin", 741852963, "darwin@darwin", "Microsoft");
+		contactRepository.save(contact4);
+		Contact contact5 = new Contact("Karim", 147258369, "karim@karim", "Microsoft");
+		contactRepository.save(contact5);
+
+
+		Opportunity opportunity1 = new Opportunity(contact1, Product.BOX, 50);
+		opportunityRepository.save(opportunity1);
+		Opportunity opportunity2 = new Opportunity(contact2, Product.FLATBED, 45);
+		opportunityRepository.save(opportunity2);
+		Opportunity opportunity3 = new Opportunity(contact3, Product.HYBRID, 33);
+		opportunityRepository.save(opportunity3);
+		Opportunity opportunity4 = new Opportunity(contact4, Product.BOX, 37);
+		opportunityRepository.save(opportunity4);
+		Opportunity opportunity5 = new Opportunity(contact5, Product.BOX, 47);
+		opportunityRepository.save(opportunity5);
+
+
+
+		Account account1 = new Account(Industry.ECOMMERCE, 478, "Arkansas", "EEUU");
+		accountRepository.save(account1);
+		Account account2 = new Account(Industry.ECOMMERCE, 5321, "Barcelona", "Spain");
+		accountRepository.save(account2);
+		Account account3 = new Account(Industry.MEDICAL, 554, "Barcelona", "Spain");
+		accountRepository.save(account3);
+		Account account4 = new Account(Industry.PRODUCE, 3321, "Barcelona", "Spain");
+		accountRepository.save(account4);
+		Account account5 = new Account(Industry.OTHER, 772, "Barcelona", "Spain");
+		accountRepository.save(account5);
+
+
+
+
+
+		SalesRep salesRep1 = new SalesRep("Vendedor1", listaOpportunities, listaDeLeads);
+		salesRepRepository.save(salesRep1);
+		SalesRep salesRep2 = new SalesRep("Vendedor2", listaOpportunities, listaDeLeads);
+		salesRepRepository.save(salesRep2);
+		SalesRep salesRep3 = new SalesRep("Vendedor3", listaOpportunities, listaDeLeads);
+		salesRepRepository.save(salesRep3);
+		SalesRep salesRep4 = new SalesRep("Vendedor4", listaOpportunities, listaDeLeads);
+		salesRepRepository.save(salesRep4);
+		SalesRep salesRep5 = new SalesRep("Vendedor5", listaOpportunities, listaDeLeads);
+		salesRepRepository.save(salesRep5);
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		
 
@@ -82,29 +156,27 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 				switch (option){
 
 					case "new lead":
-						Leads lead1 = Leads.createNewLead(listaSalesRep);
-						leadRepository.save(lead1);
-						listaDeLeads.add(lead1);
-						Leads.addSalesRepToLead(listaSalesRep, lead1);
-						leadRepository.save(lead1);
+						Leads leadNew = Leads.createNewLead(salesRepRepository.findAll());
+						leadRepository.save(leadNew);
+						Leads.addSalesRepToLead(salesRepRepository.findAll(), leadNew);
+						leadRepository.save(leadNew);
 
 						break;
 
 					case "new salesrep":
-						SalesRep salesRep1 = SalesRep.createNewSalesRep();
-						salesRepRepository.save(salesRep1);
-						listaSalesRep.add(salesRep1);
+						SalesRep newSalesRep = SalesRep.createNewSalesRep();
+						salesRepRepository.save(newSalesRep);
 
 
 						break;
 
 					case "show leads":
-						showLeads(leadRepository.findAll());
+						Leads.showLeads(leadRepository.findAll());
 
 						break;
 
 					case "lookup lead id":
-						lookupLeadId(listaDeLeads);
+						Leads.lookupLeadId(leadRepository.findAll());
 						break;
 
 					case "convert id":
@@ -206,20 +278,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 
 
-	public static void lookupLeadId(List<Leads> lista) {
 
-		boolean repite = true;
-		while (repite) {
-			int id = PideDatos.pideEntero("Choose the id you want to see detailed");
-			for (int i = 0; i < lista.size(); i++) {
-				Long a = lista.get(i).getLeadId();
-				if (a == id) {
-					System.out.println("Lead's details are: " + lista.get(i).toString());
-					repite = false;
-				}
-			}
-		}
-	}    //esta perfect  357
 
 
 	public static void convertLead(List<Leads> listaLeads, List<Contact> listaContactos, List<Opportunity> listaOpportunities, int id, List<Account> listaAccounts, List<SalesRep> listaSalesRep){
@@ -312,18 +371,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 	}//
 
 
-	public static void showLeads(List<Leads> lista){
-		//we check to see if the arraylist is empty, so we can display the proper message
-		if (lista.size() == 0) {
-			System.err.println("Currently our systems don't have any Leads in the database");
-		}
-		//otherwise, we proceed to print out all of the leads in the system.
-		else {
-			for (int i = 0; i < lista.size(); i++) {
-				System.out.println(lista.get(i).getLeadId() + " " + lista.get(i).getName() + "\n");
-			}
-		}
-	} // está ok
+
 
 
 	public static void showContacts(List<Contact> listaContacts){

@@ -28,6 +28,8 @@ public class PideDatos {
         return num;
     }
 
+
+
     public static int pideValorMinMax(int valorMinimo, int valorMaximo) {
         return pideValorMinMax(valorMinimo,valorMaximo,"Enter a value between "+valorMinimo+" and "+valorMaximo);
     }

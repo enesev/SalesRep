@@ -1,6 +1,11 @@
 package homework3grupo1.funcionesPedirDatos;
 
+import homework3grupo1.models.Leads;
+import homework3grupo1.repository.LeadRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class subMenu {
+
 
     public static void statistics() {
         boolean exit = false;

@@ -91,16 +91,15 @@ public class Leads {
 
     @Override
     public String toString() {
-        return "Lead{" +
+        return "Leads{" +
                 "leadId=" + leadId +
                 ", name='" + name + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +
                 ", companyName='" + companyName + '\'' +
-                ", SalesRep==" + salesRepLead.getSalesRepId() + " " + salesRepLead.getName() +
+                ", salesRepLead=" + salesRepLead.getSalesRepId() + "" + salesRepLead.getName() +
                 '}';
     }
-
 
     public String toString2() {
         return "Lead{" +
@@ -137,10 +136,9 @@ public class Leads {
         boolean found = false;
         do {
             SalesRep.showSalesReps((listaSalesRep));
-            int idSelected = PideDatos.pideEntero("\nPlease select the SalesRep's id you want to associate this lead with.");
+            int idSelected = PideDatos.pideValorMinMax(1,listaSalesRep.size(),"\nPlease select the SalesRep's id you want to associate this lead with.");
             for (int i = 0; i < listaSalesRep.size(); i++) {
                 if (idSelected == listaSalesRep.get(i).getSalesRepId()) {
-                    listaSalesRep.get(i).addLeadListToSalesRep(leads1);
                     leads1.setSalesRepLead(listaSalesRep.get(i));
                     found = true;
                 }
@@ -154,20 +152,39 @@ public class Leads {
 
 
 
-    public static void lookupLeadId(List<Leads> lista) {
+    public static void lookupLeadId(List<Leads> leadsList) {
+        if (leadsList.size() == 0) {
+            System.err.println("The SalesRep list is empty. Please create a SalesRep first.");
+            //otherwise, we proceed to show the lead
+        } else {
 
+        Long id = (long) PideDatos.pideValorMinMax(1, leadsList.size(), "Choose the Lead's ID you want to see.");
         boolean repite = true;
         while (repite) {
-            int id = PideDatos.pideEntero("Choose the id you want to see detailed");
-            for (int i = 0; i < lista.size(); i++) {
-                Long a = lista.get(i).getLeadId();
+
+            for (int i = 0; i < leadsList.size(); i++) {
+                Long a = leadsList.get(i).getLeadId();
                 if (a == id) {
-                    System.out.println("Lead's details are: " + lista.get(i).toString());
+                    System.out.println("Lead's details are: " + leadsList.get(i).toString());
                     repite = false;
                 }
             }
         }
-    }
+        }
+    }    //esta perfect
+
+    public static void showLeads(List<Leads> lista){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (lista.size() == 0) {
+            System.err.println("Currently our systems don't have any Leads in the database");
+        }
+        //otherwise, we proceed to print out all of the leads in the system.
+        else {
+            for (int i = 0; i < lista.size(); i++) {
+                System.out.println(lista.get(i).getLeadId() + " " + lista.get(i).getName() + "\n");
+            }
+        }
+    } // está ok
 }
 
 
