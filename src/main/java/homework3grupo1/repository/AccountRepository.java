@@ -11,6 +11,8 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
 
+
+
     //The mean employeeCount can be displayed by typing “Mean EmployeeCount”
     @Query("SELECT AVG(employeeCount) from Account")
     Double findAverage();

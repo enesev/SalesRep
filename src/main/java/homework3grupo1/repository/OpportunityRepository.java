@@ -13,6 +13,10 @@ import java.util.List;
 @Repository
 public interface OpportunityRepository extends JpaRepository<Opportunity, Integer> {
 
+    List<Opportunity> findAll();
+
+    List<Opportunity> findByStatus(Status status);
+
     //BY SALESREP
     //A count of all Opportunities by SalesRep can be displayed by typing “Report Opportunity by SalesRep”
 /*
