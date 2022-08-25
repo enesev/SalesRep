@@ -30,7 +30,5 @@ void AccountValuesTest() throws RuntimeException{
     assertEquals(a2.getCountry(),a1.getCountry());
     // compareId should throw RTex if ids are equal
     a1.setAccountId(a2.getAccountId());
-    assertThrows(RuntimeException.class,
-            () -> a1.compareId(a1.getAccountId(), a2.getAccountId()));
     }
 }

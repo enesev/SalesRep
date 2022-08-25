@@ -15,16 +15,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-/*
+
 public class MainTest {
 
     List<Leads> listaLeads = new ArrayList<>();
     List<Account> listaAccounts = new ArrayList<>();
-<<<<<<< HEAD
-    Lead l1 = new Lead(0,"juan",622733955,"juan@gmail.com","juanCompany");
-=======
+
     Leads l1 = new Leads("juan",622733955,"juan@gmail.com","juanCompany");
->>>>>>> sergio
     Contact c1 = new Contact("pedro",623525213,"pedro@hotmail.com","pedroCompany");
     Opportunity o1 = new Opportunity(c1, Product.FLATBED,20);
     Account a1 = new Account(Industry.PRODUCE,20000,"Paris", "France");
@@ -49,13 +46,8 @@ public class MainTest {
         int phoneNumber = 622733955;
         String email = "juan@gmail.com";
         String companyName = "juanCompany";
-<<<<<<< HEAD
-        Lead lead2 = new Lead(0,name, phoneNumber, email, companyName);
-        listaLeads.add(lead2);
-=======
         Leads leads2 = new Leads(name, phoneNumber, email, companyName);
         listaLeads.add(leads2);
->>>>>>> sergio
 
         assertEquals(listaLeads.get(1).getName(),listaLeads.get(0).getName());
         assertEquals(listaLeads.get(1).getPhoneNumber(),listaLeads.get(0).getPhoneNumber());
@@ -98,10 +90,8 @@ public class MainTest {
                 int quantity = 20;
                 Opportunity opportunity2 = new Opportunity(contact2, product, quantity);
                 assertEquals(expectedOpportunity.getDecisionMaker(),opportunity2.getDecisionMaker());
-
             }
         }
-
     }
     @Test
     @DisplayName("Check createAccount's output")
