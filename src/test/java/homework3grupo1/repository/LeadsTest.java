@@ -1,17 +1,21 @@
 package homework3grupo1.repository;
 
 import homework3grupo1.models.Leads;
+import homework3grupo1.models.SalesRep;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LeadsTest {
-
+    // can't test anything here, everything depends on console
     @Test
-    @DisplayName("Compare ids, throw RTex if equal.")
-    void LeadValuesTest() throws RuntimeException{
+    @DisplayName("Check if values are properly assigned")
+    void LeadValuesTest() {
         Leads l1 = new Leads();
         l1.setName("Pedro Jr");
         l1.setPhoneNumber(644820734);
