@@ -81,30 +81,30 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 
 
-		Account account1 = new Account(Industry.ECOMMERCE, 478, "Arkansas", "EEUU", listaContactos, listaOpportunities);
+		Account account1 = new Account(Industry.ECOMMERCE, 478, "Arkansas", "EEUU", new ArrayList<Contact>(), new ArrayList<Opportunity>());
 		accountRepository.save(account1);
-		Account account2 = new Account(Industry.ECOMMERCE, 5321, "Barcelona", "Spain", listaContactos, listaOpportunities);
+		Account account2 = new Account(Industry.ECOMMERCE, 5321, "Barcelona", "Spain", new ArrayList<Contact>(), new ArrayList<Opportunity>());
 		accountRepository.save(account2);
-		Account account3 = new Account(Industry.MEDICAL, 554, "Barcelona", "Spain", listaContactos, listaOpportunities);
+		Account account3 = new Account(Industry.MEDICAL, 554, "Barcelona", "Spain", new ArrayList<Contact>(), new ArrayList<Opportunity>());
 		accountRepository.save(account3);
-		Account account4 = new Account(Industry.PRODUCE, 3321, "Barcelona", "Spain", listaContactos, listaOpportunities);
+		Account account4 = new Account(Industry.PRODUCE, 3321, "Barcelona", "Spain", new ArrayList<Contact>(), new ArrayList<Opportunity>());
 		accountRepository.save(account4);
-		Account account5 = new Account(Industry.OTHER, 772, "Barcelona", "Spain", listaContactos, listaOpportunities);
+		Account account5 = new Account(Industry.OTHER, 772, "Barcelona", "Spain", new ArrayList<Contact>(), new ArrayList<Opportunity>());
 		accountRepository.save(account5);
 
 
 
 
 
-		SalesRep salesRep1 = new SalesRep("Vendedor1", listaOpportunities, listaDeLeads);
+		SalesRep salesRep1 = new SalesRep("Vendedor1", new ArrayList<Opportunity>(), new ArrayList<Leads>());
 		salesRepRepository.save(salesRep1);
-		SalesRep salesRep2 = new SalesRep("Vendedor2", listaOpportunities, listaDeLeads);
+		SalesRep salesRep2 = new SalesRep("Vendedor2", new ArrayList<Opportunity>(), new ArrayList<Leads>());
 		salesRepRepository.save(salesRep2);
-		SalesRep salesRep3 = new SalesRep("Vendedor3", listaOpportunities, listaDeLeads);
+		SalesRep salesRep3 = new SalesRep("Vendedor3", new ArrayList<Opportunity>(), new ArrayList<Leads>());
 		salesRepRepository.save(salesRep3);
-		SalesRep salesRep4 = new SalesRep("Vendedor4", listaOpportunities, listaDeLeads);
+		SalesRep salesRep4 = new SalesRep("Vendedor4", new ArrayList<Opportunity>(), new ArrayList<Leads>());
 		salesRepRepository.save(salesRep4);
-		SalesRep salesRep5 = new SalesRep("Vendedor5", listaOpportunities, listaDeLeads);
+		SalesRep salesRep5 = new SalesRep("Vendedor5", new ArrayList<Opportunity>(), new ArrayList<Leads>());
 		salesRepRepository.save(salesRep5);
 
 
@@ -118,6 +118,75 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 		opportunityRepository.save(opportunity4);
 		Opportunity opportunity5 = new Opportunity(contact5, Product.BOX, 47, salesRep5);
 		opportunityRepository.save(opportunity5);
+
+
+		account1.addOpportunityList(opportunity1);
+		account1.addContactList(contact1);
+		accountRepository.save(account1);
+		account2.addOpportunityList(opportunity2);
+		account2.addContactList(contact2);
+		accountRepository.save(account2);
+		account3.addOpportunityList(opportunity3);
+		account3.addContactList(contact3);
+		accountRepository.save(account3);
+		account4.addOpportunityList(opportunity4);
+		account4.addContactList(contact4);
+		accountRepository.save(account4);
+		account5.addOpportunityList(opportunity5);
+		account5.addContactList(contact5);
+		accountRepository.save(account5);
+
+
+		salesRep1.addLeadToSalesRepList(lead1);
+		salesRep1.addOpportunityListToSalesRep(opportunity1);
+		salesRepRepository.save(salesRep1);
+		salesRep2.addLeadToSalesRepList(lead2);
+		salesRep2.addOpportunityListToSalesRep(opportunity2);
+		salesRepRepository.save(salesRep2);
+		salesRep3.addLeadToSalesRepList(lead3);
+		salesRep3.addOpportunityListToSalesRep(opportunity3);
+		salesRepRepository.save(salesRep3);
+		salesRep4.addLeadToSalesRepList(lead4);
+		salesRep4.addOpportunityListToSalesRep(opportunity4);
+		salesRepRepository.save(salesRep4);
+		salesRep5.addLeadToSalesRepList(lead5);
+		salesRep5.addOpportunityListToSalesRep(opportunity5);
+		salesRepRepository.save(salesRep5);
+
+
+		lead1.setSalesRepLead(salesRep1);
+		leadRepository.save(lead1);
+		lead2.setSalesRepLead(salesRep2);
+		leadRepository.save(lead2);
+		lead3.setSalesRepLead(salesRep3);
+		leadRepository.save(lead3);
+		lead4.setSalesRepLead(salesRep4);
+		leadRepository.save(lead4);
+		lead5.setSalesRepLead(salesRep5);
+		leadRepository.save(lead5);
+
+
+		contact1.setAccount(account1);
+		contact1.setOpportunity(opportunity1);
+		contactRepository.save(contact1);
+
+		contact2.setAccount(account2);
+		contact2.setOpportunity(opportunity2);
+		contactRepository.save(contact2);
+
+		contact3.setAccount(account3);
+		contact3.setOpportunity(opportunity3);
+		contactRepository.save(contact3);
+
+		contact4.setAccount(account4);
+		contact4.setOpportunity(opportunity4);
+		contactRepository.save(contact4);
+
+		contact5.setAccount(account5);
+		contact5.setOpportunity(opportunity5);
+		contactRepository.save(contact5);
+
+
 
 
 

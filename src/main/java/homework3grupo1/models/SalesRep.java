@@ -37,7 +37,7 @@ public class SalesRep {
         this.opportunitySalesRepList.add(opportunity);
     }
 
-    public void addLeadListToSalesRep(Leads leads){
+    public void addLeadToSalesRepList(Leads leads){
         this.leadsSalesRepList.add(leads);
     }
 

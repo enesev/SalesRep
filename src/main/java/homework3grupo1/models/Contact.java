@@ -27,6 +27,17 @@ public class Contact {
         this.companyName = companyName;
     }
 
+
+
+    public Contact(String name, int phoneNumber, String email, String companyName, Account account, Opportunity opportunity) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.companyName = companyName;
+        setAccount(account);
+        setOpportunity(opportunity);
+    }
+
     public Contact(){};
 
 
@@ -68,6 +79,22 @@ public class Contact {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public Opportunity getOpportunity() {
+        return opportunity;
+    }
+
+    public void setOpportunity(Opportunity opportunity) {
+        this.opportunity = opportunity;
     }
 
     @Override
