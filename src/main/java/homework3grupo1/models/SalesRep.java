@@ -108,5 +108,5 @@ public class SalesRep {
                 System.out.println(listaSalesRep.get(i).toString() + "\n");
             }
         }
-    } // está ok
+    } // está okk
 }
