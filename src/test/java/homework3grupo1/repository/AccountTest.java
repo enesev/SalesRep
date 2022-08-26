@@ -2,13 +2,23 @@ package homework3grupo1.repository;
 
 import homework3grupo1.enums.Industry;
 import homework3grupo1.models.Account;
+import homework3grupo1.models.Contact;
+import homework3grupo1.models.Opportunity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AccountTest {
+
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
 @Test
 @DisplayName("Checks that acc properties are equal in case any logic is implemented in g&s. " +
@@ -29,4 +39,18 @@ void AccountValuesTest() throws RuntimeException{
     assertEquals(a2.getCity(),a1.getCity());
     assertEquals(a2.getCountry(),a1.getCountry());
     }
+@Test
+@DisplayName("Soutput check")
+void showAccountNamesTest(){
+    /* might want to change this to pull list from repository
+       and refactor it to pass in this context                  */
+    List<Account> accountList = new ArrayList<>();
+    List<Contact> listaContactos = new ArrayList<>();
+    List<Opportunity> listaOpportunities= new ArrayList<>();
+    Account account1 = new Account(Industry.ECOMMERCE, 478, "Arkansas", "EEUU", listaContactos, listaOpportunities);
+
+    Account.showAccounts(accountList);
+    assertEquals(account1.toString(), outputStreamCaptor.toString());
+    }
 }
+
