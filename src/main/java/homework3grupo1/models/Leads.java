@@ -1,11 +1,14 @@
 package homework3grupo1.models;
 
+import homework3grupo1.enums.Industry;
+import homework3grupo1.enums.Product;
 import homework3grupo1.funcionesPedirDatos.PideDatos;
 import homework3grupo1.repository.LeadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Scanner;
 
 @Entity
 public class Leads {
@@ -185,6 +188,106 @@ public class Leads {
             }
         }
     } // está ok
+
+
+    public static Contact convertLead_fase1(List<Leads> listaLeads, List<Contact> listaContactos, int id) {
+        Leads lead1;
+        for (Leads listaLead : listaLeads) {
+            if (listaLead.getLeadId().equals(id)) {
+                lead1 = listaLead;
+                Contact contact1 = new Contact(lead1.getName(), lead1.getPhoneNumber(), lead1.getEmail(), lead1.getCompanyName());
+                listaContactos.add(contact1);
+                System.out.println("The lead " + listaLead.getLeadId() + " has been transferred to the contact list.\n");
+
+                return contact1;
+            }else {
+                System.err.println("This ID doesn't exist.");
+                break;
+            }
+        }
+            return null;
+        }
+
+    public static Opportunity convertLead_fase2( Contact contact, List<Opportunity> listaOpportunities) {
+        Product product = PideDatos.pideProduct();
+        int quantity = PideDatos.pideValorMinMaxCamiones(1, 50);
+        Opportunity opportunity1 = new Opportunity(contact, product, quantity);
+        listaOpportunities.add(opportunity1);
+        System.out.println("The lead has been converted to opportunity and added to the list of opportunities, with the following data : " + opportunity1.toString2() + ".\n");
+        return opportunity1;
+    }
+
+    public static Account convertLead_fase3(Contact contact, Opportunity opportunity, List<Account> listaAccounts) {
+                    Scanner scan = new Scanner(System.in);
+                    boolean exit = false;
+                    do {
+                        try {
+                            System.out.println("Would you like to create a new account? (Y/N)");
+                            String option = scan.nextLine().toLowerCase().trim();
+
+                            switch (option) {
+
+                                case "y":
+                                    Account accountNueva = createAccount(listaAccounts);
+                                    accountNueva.addContactList(contact);
+                                    accountNueva.addOpportunityList(opportunity);
+                                    exit = true;
+                                    return accountNueva;
+
+
+                                case "n":
+                                    if (listaAccounts.size() == 0) {
+                                        System.err.println("Currently our systems don't have any Account in the database.");
+                                        exit = true;
+                                    }
+                                    //otherwise, we proceed to print out all of the accounts in the system.
+                                    else {
+                                        Account.showAccounts(listaAccounts);
+                                        boolean found = false;
+                                        do {
+                                            int accountId = PideDatos.pideEntero("Select an account id.");
+                                            for (int q = 0; q < listaAccounts.size(); q++) {
+                                                Long b = listaAccounts.get(q).getAccountId();
+                                                if (b == accountId){
+                                                    Account accountCopia = listaAccounts.get(q);
+                                                    accountCopia.addContactList(contact);
+                                                    accountCopia.addOpportunityList(opportunity);
+                                                    System.out.println("Contact " + contact.getContactId() +
+                                                            " and " + opportunity.getOpportunityId() +
+                                                            " have been added to Account " + listaAccounts.get(q).getAccountId());
+                                                    found = true;
+                                                    return accountCopia;
+                                                }
+                                            }if (!found) System.err.println("Selected id doesn't exist. Try again");
+                                        }while (!found);
+                                    }//
+                                    exit = true;
+                                    break;
+
+                                default:
+                                    System.err.println("You have to select an appropriate option. Type just Y or N.");
+                            }
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                            scan.next();
+                        }
+                    } while (!exit);
+            return null;
+    }
+
+
+
+    public static Account createAccount(List<Account> listaAccounts){
+        Industry industry1 = PideDatos.pideIndustry();
+        int empleados = PideDatos.pideValorMinMaxEmpleados(1, 50000);
+        String city = PideDatos.pideString("What city is the company from?");
+        String country = PideDatos.pideString("What country is the city from?");
+        Account account1 = new Account(industry1, empleados, city, country);
+        System.out.println("An account has been created with the following data :" + account1.toString() + "\n");
+        return account1;
+    }//
+
+
 }
 
 

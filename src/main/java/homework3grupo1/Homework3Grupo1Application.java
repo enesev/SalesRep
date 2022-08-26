@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -28,11 +29,17 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 	@Autowired
 	ContactRepository contactRepository;
 
-	@Autowired
-	AccountRepository accountRepository;
 
 	@Autowired
+	AccountRepository accountRepository;
+	public void saveAccount(Account account){
+		accountRepository.save(account);
+	}
+	@Autowired
 	OpportunityRepository opportunityRepository;
+	public void saveOpportunity(Opportunity opportunity){
+		opportunityRepository.save(opportunity);
+	}
 
 
 
@@ -248,8 +255,34 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						break;
 
 					case "convert id": //TODO --> ACABAR ESTO. HACERLO COMO EL CLOSE-LOST PARA QUE NO DE ERRORES AL ELIMINAR ALGUIEN DE LA LISTA
-						int id = PideDatos.pideEntero("Select a lead's id to convert it to contact.");
-						convertLead(listaDeLeads, listaContactos, listaOpportunities, id, listaAccounts, listaSalesRep);
+						List<Leads> listaCConvert = leadRepository.findAll();
+						Leads.showLeads(leadRepository.findAll());
+
+						if (listaCConvert.size() == 0) {
+							System.err.println("Currently our systems don't have any Leads in the database.");
+							} else {
+								int id = PideDatos.pideEntero("Select the Lead's ID you want to convert.");
+								for (int q = 0; q < listaCConvert.size(); q++) {
+									Long b = listaCConvert.get(q).getLeadId();
+									if (b == id) {
+										Leads leadConvert = listaCConvert.get(q);
+
+										Contact contactNew = Leads.convertLead_fase1(leadRepository.findAll(), contactRepository.findAll(), id);
+										contactRepository.save(contactNew);
+										//,
+										Opportunity opportunityNew = Leads.convertLead_fase2(contactNew, opportunityRepository.findAll());
+										opportunityRepository.save(opportunityNew);
+
+										Account accountNew = Leads.convertLead_fase3(contactNew, opportunityNew, accountRepository.findAll());
+										accountRepository.save(accountNew);
+
+										leadRepository.delete(leadConvert);
+
+									} else {
+										System.err.println("This ID doesn't exist."); break;
+									}
+								}
+						}
 
 						break;
 
@@ -279,8 +312,9 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						Opportunity opportunityWon = Opportunity.closeWonId(opportunityRepository.findByStatus(Status.OPEN));
 						opportunityRepository.save(opportunityWon);
 						break;
-					case "statistics": //TODO --> HACER QUERYS
-						subMenu.statistics();
+
+					case ("statistics"):
+						System.err.println("Service under construction.");
 						break;
 
 					case "exit":
@@ -305,94 +339,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 
 
-	public static void convertLead(List<Leads> listaLeads, List<Contact> listaContactos, List<Opportunity> listaOpportunities, int id, List<Account> listaAccounts, List<SalesRep> listaSalesRep){
-		//we check to see if the arraylist is empty, so we can display the proper message
-		if (listaLeads.size() == 0) {
-			System.err.println("Currently our systems don't have any Leads in the database.");
-		}
-		//otherwise, we proceed to print out all of the leads in the system.
-		else {
-			for (int i = 0; i < listaLeads.size(); i++) {
-				Long a = listaLeads.get(i).getLeadId();
-				if (a == id) {
-					Contact contact1 = new Contact(listaLeads.get(i).getName(), listaLeads.get(i).getPhoneNumber(), listaLeads.get(i).getEmail(), listaLeads.get(i).getCompanyName());
-					listaContactos.add(contact1);
-					System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been transferred to the contact list.\n");
-					Product product = PideDatos.pideProduct();
-					int quantity = PideDatos.pideValorMinMaxCamiones(1, 50);
-					Opportunity opportunity1 = new Opportunity(contact1, product, quantity, listaLeads.get(i).getSalesRepLead());
-					listaOpportunities.add(opportunity1);
-					System.out.println("The lead " + listaLeads.get(i).getLeadId() + " has been converted to opportunity and added to the list of opportunities, with the following data : " + opportunity1.toString2() + ".\n");
-					listaLeads.get(i).getSalesRepLead().addOpportunityListToSalesRep(opportunity1);
-					listaLeads.remove(i); //TODO -- remove aqui? en caso de que en el switch eligan N, saldra fuera al menu principal y el lead ya no existira.
 
-					Scanner scan = new Scanner(System.in);
-					boolean exit = false;
-					do {
-						try {
-							System.out.println("Would you like to create a new account? (Y/N)");
-							String option = scan.nextLine().toLowerCase().trim();
-
-							switch (option) {
-
-								case "y":
-									createAccount(listaAccounts);
-									listaAccounts.get(i).addContactList(contact1);
-									listaAccounts.get(i).addOpportunityList(opportunity1);
-									exit = true;
-									break;
-
-								case "n":
-									if (listaAccounts.size() == 0) {
-										System.err.println("Currently our systems don't have any Account in the database.");
-										exit = true;
-									}
-									//otherwise, we proceed to print out all of the accounts in the system.
-									else {
-										Account.showAccounts(listaAccounts);
-										boolean found = false;
-										do {
-											int accountId = PideDatos.pideEntero("Select an account id.");
-											for (int q = 0; q < listaAccounts.size(); q++) {
-												Long b = listaAccounts.get(q).getAccountId();
-												if (b == accountId){
-													listaAccounts.get(q).addContactList(contact1);
-													listaAccounts.get(q).addOpportunityList(opportunity1);
-													System.out.println("Contact " + contact1.getContactId() +
-															" and " + opportunity1.getOpportunityId() +
-															" have been added to Account " + listaAccounts.get(q).getAccountId());
-													found = true;
-												}
-											}if (!found) System.err.println("Selected id doesn't exist. Try again");
-										}while (!found);
-									}//
-									exit = true;
-									break;
-
-								default:
-									System.err.println("You have to select an appropriate option. Type just Y or N.");
-							}
-						}catch (Exception e) {
-							e.printStackTrace();
-							scan.next();
-						}
-					} while (!exit);
-
-				}
-			}
-		}
-	}
-
-
-	public static void createAccount(List<Account> listaAccounts){
-		Industry industry1 = PideDatos.pideIndustry();
-		int empleados = PideDatos.pideValorMinMaxEmpleados(1, 50000);
-		String city = PideDatos.pideString("What city is the company from?");
-		String country = PideDatos.pideString("What country is the city from?");
-		Account account1 = new Account(industry1, empleados, city, country);
-		System.out.println("An account has been created with the following data :" + account1.toString() + "\n");
-		listaAccounts.add(account1);
-	}//
 
 
 

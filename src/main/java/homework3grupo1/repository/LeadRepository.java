@@ -20,6 +20,8 @@ public interface LeadRepository extends JpaRepository<Leads, Integer> {
 
 
 
+
+
     //A count of Leads by SalesRep can be displayed by typing “Report Lead by SalesRep”
     //List<Leads> findBySalesRep(SalesRep salesRepLead);
 
