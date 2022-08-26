@@ -27,6 +27,16 @@ public class Account {
         setCity(city);
         setCountry(country);
     }
+
+    public Account(Industry industry, int employeeCount, String city, String country, List<Contact> contactList, List<Opportunity> opportunityList) {
+        this.industry = industry;
+        this.employeeCount = employeeCount;
+        this.city = city;
+        this.country = country;
+        this.contactList = contactList;
+        this.opportunityList = opportunityList;
+    }
+
     public Account(){};
 
     public void compareId(int id1, int id2) throws RuntimeException{
@@ -103,8 +113,19 @@ public class Account {
                 ", employeeCount=" + employeeCount +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
-                ", contactList=" + contactList +
-                ", opportunityList=" + opportunityList +
-                '}';
+                '}'+"\n";
     }
+
+    public static void showAccounts(List<Account> listaAccounts){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaAccounts.size() == 0) {
+            System.err.println("Currently our systems don't have any Account in the database");
+        }
+        //otherwise, we proceed to print out all of the accounts in the system.
+        else {
+            for (int i = 0; i < listaAccounts.size(); i++) {
+                System.out.println(listaAccounts.get(i).toString() + "\n");
+            }
+        }
+    } // está ok
 }

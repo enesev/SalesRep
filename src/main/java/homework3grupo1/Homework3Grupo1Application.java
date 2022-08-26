@@ -79,28 +79,17 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 		contactRepository.save(contact5);
 
 
-		Opportunity opportunity1 = new Opportunity(contact1, Product.BOX, 50);
-		opportunityRepository.save(opportunity1);
-		Opportunity opportunity2 = new Opportunity(contact2, Product.FLATBED, 45);
-		opportunityRepository.save(opportunity2);
-		Opportunity opportunity3 = new Opportunity(contact3, Product.HYBRID, 33);
-		opportunityRepository.save(opportunity3);
-		Opportunity opportunity4 = new Opportunity(contact4, Product.BOX, 37);
-		opportunityRepository.save(opportunity4);
-		Opportunity opportunity5 = new Opportunity(contact5, Product.BOX, 47);
-		opportunityRepository.save(opportunity5);
 
 
-
-		Account account1 = new Account(Industry.ECOMMERCE, 478, "Arkansas", "EEUU");
+		Account account1 = new Account(Industry.ECOMMERCE, 478, "Arkansas", "EEUU", listaContactos, listaOpportunities);
 		accountRepository.save(account1);
-		Account account2 = new Account(Industry.ECOMMERCE, 5321, "Barcelona", "Spain");
+		Account account2 = new Account(Industry.ECOMMERCE, 5321, "Barcelona", "Spain", listaContactos, listaOpportunities);
 		accountRepository.save(account2);
-		Account account3 = new Account(Industry.MEDICAL, 554, "Barcelona", "Spain");
+		Account account3 = new Account(Industry.MEDICAL, 554, "Barcelona", "Spain", listaContactos, listaOpportunities);
 		accountRepository.save(account3);
-		Account account4 = new Account(Industry.PRODUCE, 3321, "Barcelona", "Spain");
+		Account account4 = new Account(Industry.PRODUCE, 3321, "Barcelona", "Spain", listaContactos, listaOpportunities);
 		accountRepository.save(account4);
-		Account account5 = new Account(Industry.OTHER, 772, "Barcelona", "Spain");
+		Account account5 = new Account(Industry.OTHER, 772, "Barcelona", "Spain", listaContactos, listaOpportunities);
 		accountRepository.save(account5);
 
 
@@ -119,6 +108,16 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 		salesRepRepository.save(salesRep5);
 
 
+		Opportunity opportunity1 = new Opportunity(contact1, Product.BOX, 50, salesRep1);
+		opportunityRepository.save(opportunity1);
+		Opportunity opportunity2 = new Opportunity(contact2, Product.FLATBED, 45, salesRep2);
+		opportunityRepository.save(opportunity2);
+		Opportunity opportunity3 = new Opportunity(contact3, Product.HYBRID, 33, salesRep3);
+		opportunityRepository.save(opportunity3);
+		Opportunity opportunity4 = new Opportunity(contact4, Product.BOX, 37, salesRep4);
+		opportunityRepository.save(opportunity4);
+		Opportunity opportunity5 = new Opportunity(contact5, Product.BOX, 47, salesRep5);
+		opportunityRepository.save(opportunity5);
 
 
 
@@ -179,23 +178,23 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						Leads.lookupLeadId(leadRepository.findAll());
 						break;
 
-					case "convert id":
+					case "convert id": //TODO --> ACABAR ESTO. HACERLO COMO EL CLOSE-LOST PARA QUE NO DE ERRORES AL ELIMINAR ALGUIEN DE LA LISTA
 						int id = PideDatos.pideEntero("Select a lead's id to convert it to contact.");
 						convertLead(listaDeLeads, listaContactos, listaOpportunities, id, listaAccounts, listaSalesRep);
 
 						break;
 
 					case "show contacts":
-						showContacts(listaContactos); //dentro del parentesis iria contactRepository.findAll
+						Contact.showContacts(contactRepository.findAll());
 
 						break;
 
 					case "show opportunities":
-						showOpportunities(listaOpportunities);
+						Opportunity.showOpportunities(opportunityRepository.findAll());
 						break;
 
 					case "show accounts":
-						showAccounts(listaAccounts);
+						Account.showAccounts(accountRepository.findAll());
 						break;
 
 					case "show salesreps":
@@ -203,16 +202,15 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						break;
 
 					case "close-lost id":
-						int oppId = PideDatos.pideEntero("Write opportunity's id you want to mark as closed-lost.");
-
-						closeLostId(listaOpportunities, oppId);
+						Opportunity opportunityLost = Opportunity.closeLostId(opportunityRepository.findByStatus(Status.OPEN));
+						opportunityRepository.save(opportunityLost);
 						break;
 
 					case "close-won id":
-						int oppId2 = PideDatos.pideEntero("Write opportunity's id you want to mark as closed-won.");
-						closeWonId(listaOpportunities, oppId2);
+						Opportunity opportunityWon = Opportunity.closeWonId(opportunityRepository.findByStatus(Status.OPEN));
+						opportunityRepository.save(opportunityWon);
 						break;
-					case "statistics":
+					case "statistics": //TODO --> HACER QUERYS
 						subMenu.statistics();
 						break;
 
@@ -234,49 +232,6 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 
 	}
-
-	/*
-	public static List<Leads> createNewLead(List<Leads> lalista, List<SalesRep> listaSalesRep){
-
-
-		//we check to see if the arraylist is empty, so we can display the proper message
-		if(listaSalesRep.size() == 0){
-			System.err.println("The SalesRep list is empty. Please create a SalesRep first.");
-			//otherwise, we proceed to create a lead
-		}else {
-			System.out.println("Creating a new lead:");
-			String name = PideDatos.pideString("What is the name of the new lead?");
-			int phoneNumber = PideDatos.pideEntero("What is its phone number?");
-			String email = PideDatos.pideString("What is its email address?");
-			String companyName = PideDatos.pideString("What company does he/she work for?");
-			Leads leads1 = new Leads(name, phoneNumber, email, companyName);
-			System.out.println("A new lead has been created with the following data: " + leads1.toString2());
-			lalista.add(leads1);
-
-			System.out.println("\nThese are the SalesRep we have available: \n");
-			showSalesReps(listaSalesRep);
-			boolean found = false;
-			do {
-				int idSelected = PideDatos.pideEntero("\nPlease select the SalesRep's id you want to associate this lead with.");
-				for (int i = 0; i < listaSalesRep.size(); i++) {
-					if (idSelected == listaSalesRep.get(i).getSalesRepId()) {
-						listaSalesRep.get(i).addLeadListToSalesRep(leads1);
-						leads1.setSalesRepLead(listaSalesRep.get(i));
-						found = true;
-					}
-				}if (!found) System.err.println("Selected id doesn't exist. Try again");
-			}while (!found);
-			System.out.println("\nLead " + leads1.getLeadId() + " has been added to the selected SalesRep\n");
-			return lalista;
-
-		}
-		return null;
-	}*/
-
-
-
-
-
 
 
 
@@ -325,7 +280,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 									}
 									//otherwise, we proceed to print out all of the accounts in the system.
 									else {
-										showAccounts(listaAccounts);
+										Account.showAccounts(listaAccounts);
 										boolean found = false;
 										do {
 											int accountId = PideDatos.pideEntero("Select an account id.");
@@ -373,83 +328,6 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 
 
-
-	public static void showContacts(List<Contact> listaContacts){
-		//we check to see if the arraylist is empty, so we can display the proper message
-		if (listaContacts.size() == 0) {
-			System.err.println("Currently our systems don't have any Contact in the database");
-		}
-		//otherwise, we proceed to print out all of the contacts in the system.
-		else {
-			for (int i = 0; i < listaContacts.size(); i++) {
-				System.out.println(listaContacts.get(i).toString() +"\n");
-			}
-		}
-	} // está ok
-
-
-
-	public static void showOpportunities(List<Opportunity> listaOpportunities){
-		//we check to see if the arraylist is empty, so we can display the proper message
-		if (listaOpportunities.size() == 0) {
-			System.err.println("Currently our systems don't have any Opportunity in the database");
-		}
-		//otherwise, we proceed to print out all of the opportunities in the system.
-		else {
-			for (int i = 0; i < listaOpportunities.size(); i++) {
-				System.out.println(listaOpportunities.get(i).toString2() +"\n");
-			}
-		}
-	} // está ok
-
-	public static void showAccounts(List<Account> listaAccounts){
-		//we check to see if the arraylist is empty, so we can display the proper message
-		if (listaAccounts.size() == 0) {
-			System.err.println("Currently our systems don't have any Account in the database");
-		}
-		//otherwise, we proceed to print out all of the accounts in the system.
-		else {
-			for (int i = 0; i < listaAccounts.size(); i++) {
-				System.out.println(listaAccounts.get(i).toString() + "\n");
-			}
-		}
-	} // está ok
-
-
-
-	public static void closeLostId(List<Opportunity> listaOpportunities, int oppId){
-		for (int i = 0; i < listaOpportunities.size(); i++) {
-			Opportunity opportunity1 = listaOpportunities.get(i);
-			if (opportunity1.getOpportunityId() == oppId){
-
-				if (opportunity1.getStatus() == Status.OPEN) {
-					opportunity1.setStatus(Status.CLOSED_LOST);
-					System.out.println("Status changed to Closed_Lost status.");
-				}else if (opportunity1.getStatus() != Status.OPEN){
-					System.err.println("This opportunity's status is not open. Please select an oppen oportunity");
-				}
-			}else {
-				System.err.println("Selected id doesn't exist. Please choose a valid id.");
-			}
-		}
-	}//añadir al principio que compruebe que haya opportunities en la lista?? o que haya y esten en open??
-
-	public static void closeWonId(List<Opportunity> listaOpportunities, int oppId2){
-		for (int i = 0; i < listaOpportunities.size(); i++) {
-			Opportunity opportunity1 = listaOpportunities.get(i);
-			if (opportunity1.getOpportunityId() == oppId2){
-
-				if (opportunity1.getStatus() == Status.OPEN) {
-					opportunity1.setStatus(Status.CLOSED_WON);
-					System.out.println("Status changed to Closed_Won status.");
-				}else if (opportunity1.getStatus() != Status.OPEN){
-					System.err.println("This opportunity's status is not open. Please select an open oportunity");
-				}
-			}else {
-				System.err.println("Selected id doesn't exist. Please choose a valid id.");
-			}
-		}
-	}
 
 
 

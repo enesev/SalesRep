@@ -2,8 +2,10 @@ package homework3grupo1.models;
 
 import homework3grupo1.enums.Product;
 import homework3grupo1.enums.Status;
+import homework3grupo1.funcionesPedirDatos.PideDatos;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Opportunity {
@@ -40,7 +42,7 @@ public class Opportunity {
         setDecisionMaker(decisionMaker);
         setProduct(product);
         setQuantity(quantity);
-        this.salesRepOpportunity = salesRepOpportunity;
+        setSalesRepOpportunity(salesRepOpportunity);
     }
 
     public Opportunity() {
@@ -116,8 +118,7 @@ public class Opportunity {
                 ", product=" + product +
                 ", quantity=" + quantity +
                 ", account=" + account +
-                ", SalesRep=" + salesRepOpportunity.getSalesRepId() + " " + salesRepOpportunity.getName() +
-                '}';
+                '}' +"\n"+"\n" ;
     }
 
     public String toString2() {
@@ -128,6 +129,75 @@ public class Opportunity {
                 ", product=" + product +
                 ", quantity=" + quantity +
                 ", account=" + account +
-                '}';
+                '}' +"\n"+"\n";
     }
+
+    public static void showOpportunities(List<Opportunity> listaOpportunities){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaOpportunities.size() == 0) {
+            System.err.println("Currently our systems don't have any Opportunity in the database");
+        }
+        //otherwise, we proceed to print out all of the opportunities in the system.
+        else {
+            for (int i = 0; i < listaOpportunities.size(); i++) {
+                System.out.println(listaOpportunities.get(i).toString2() +"\n");
+            }
+        }
+    } // está ok
+
+    public static Opportunity closeLostId(List<Opportunity> listaOpportunities) {
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaOpportunities.size() == 0) {
+            System.err.println("Currently our systems don't have any Opportunity in the database");
+        }
+        //otherwise, we proceed to print out all of the opportunities in the system.
+        else {
+            System.out.println(listaOpportunities);
+            Long id = (long) PideDatos.pideEntero("Choose the Opportunity's ID you want to close-Lost.");
+            Opportunity opportunity1 = null;
+            for (int i = 0; i < listaOpportunities.size(); i++) {
+                opportunity1 = listaOpportunities.get(i);
+                if (opportunity1.getOpportunityId().equals(id)) {
+                    opportunity1.setStatus(Status.CLOSED_LOST);
+                    System.out.println("Status changed to Closed_Lost status.");
+                    return opportunity1;
+                }
+                
+            }if (opportunity1.getOpportunityId() != id) {
+                System.err.println("This id doesn't exist. Try again.");
+            }
+        }
+        return closeLostId(listaOpportunities);
+    }
+
+
+    public static Opportunity closeWonId(List<Opportunity> listaOpportunities) {
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaOpportunities.size() == 0) {
+            System.err.println("Currently our systems don't have any Opportunity in the database");
+        }
+        //otherwise, we proceed to print out all of the opportunities in the system.
+        else {
+            System.out.println(listaOpportunities);
+            Long id = (long) PideDatos.pideEntero("Choose the Opportunity's ID you want to close-Lost.");
+            Opportunity opportunity1 = null;
+            for (int i = 0; i < listaOpportunities.size(); i++) {
+                opportunity1 = listaOpportunities.get(i);
+                if (opportunity1.getOpportunityId().equals(id)) {
+                    opportunity1.setStatus(Status.CLOSED_WON);
+                    System.out.println("Status changed to Closed_Won status.");
+                    return opportunity1;
+                }
+
+            }if (opportunity1.getOpportunityId() != id) {
+                System.err.println("This id doesn't exist. Try again.");
+            }
+        }
+        return closeWonId(listaOpportunities);
+    }
+
+
+
+
+
 }

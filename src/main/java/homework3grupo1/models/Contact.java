@@ -1,6 +1,7 @@
 package homework3grupo1.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Contact {
@@ -77,7 +78,20 @@ public class Contact {
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +
                 ", companyName='" + companyName + '\'' +
-                '}';
+                '}'+"\n" ;
     }
+
+    public static void showContacts(List<Contact> listaContacts){
+        //we check to see if the arraylist is empty, so we can display the proper message
+        if (listaContacts.size() == 0) {
+            System.err.println("Currently our systems don't have any Contact in the database");
+        }
+        //otherwise, we proceed to print out all of the contacts in the system.
+        else {
+            for (int i = 0; i < listaContacts.size(); i++) {
+                System.out.println(listaContacts.get(i).toString() +"\n");
+            }
+        }
+    } // está ok
 }
 
