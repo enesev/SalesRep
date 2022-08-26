@@ -36,4 +36,24 @@ public class SalesRepTest {
 
         assertEquals(expectedSalesRep.toString(),s1.toString());
     }
+
+    @Test
+    @DisplayName("Check if leads are added to SRList")
+    void addLeadListToSalesRepTest() {
+        Leads l1 = new Leads("Giuseppe",655766877,"giuseppe@giuse.ppe","Giuseppería");
+        List<Opportunity> opportunityList = new ArrayList<>();
+        List<Leads> leadsList = new ArrayList<>();
+
+        SalesRep s1 = new SalesRep("Juan",opportunityList, leadsList);
+        s1.addLeadListToSalesRep(l1);
+
+        Leads expectedLead = new Leads("Giuseppe",655766877,"giuseppe@giuse.ppe","Giuseppería");
+        List<Opportunity> expectedOpportunityList = new ArrayList<>();
+        List<Leads> expectedLeadsList = new ArrayList<>();
+        expectedLeadsList.add(expectedLead);
+
+        SalesRep expectedSalesRep = new SalesRep("Juan",expectedOpportunityList, expectedLeadsList);
+
+        assertEquals(expectedSalesRep.toString(),s1.toString());
+    }
 }
