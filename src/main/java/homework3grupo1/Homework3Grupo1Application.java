@@ -50,6 +50,8 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+////////////////////////////////////// HERE WE CREATE SOME LISTS, LEADS, OPPORTUNITIES, ACCOUNTS, CONTACTS, SALESREPS IN ORDER TO MAKE THE QUERYS EASIER TO USE ///////////////////////////////////////////////////
+
 		List<Leads> listaDeLeads = new ArrayList<>();
 
 		List<Contact> listaContactos = new ArrayList<>();
@@ -198,7 +200,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////  HERE STARTS OUR PROJECT   ////////////////////////////////////////////////////////////////////////////
 
 		
 
@@ -254,7 +256,7 @@ public class Homework3Grupo1Application implements CommandLineRunner {
 						Leads.lookupLeadId(leadRepository.findAll());
 						break;
 
-					case "convert id": //TODO --> ACABAR ESTO. HACERLO COMO EL CLOSE-LOST PARA QUE NO DE ERRORES AL ELIMINAR ALGUIEN DE LA LISTA
+					case "convert id":
 						List<Leads> listaCConvert = leadRepository.findAll();
 						Leads.showLeads(leadRepository.findAll());
 
